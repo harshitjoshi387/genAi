@@ -7,6 +7,11 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
+const messages = [];
+const model = new chatMistralAi({
+  model: "mistral-small-latest",
+});
+
 function askQuestion(prompt) {
   return new Promise((resolve) => {
     rl.question(prompt, (answer) => resolve(answer));
@@ -18,10 +23,6 @@ function printMessage(role, message) {
   console.log(`\n[${label}] ${message}`);
   console.log("-".repeat(40));
 }
-
-const model = new chatMistralAi({
-  model: "mistral-small-latest",
-});
 
 async function main() {
   while (true) {
@@ -41,9 +42,13 @@ async function main() {
 
     printMessage("user", trimmedInput);
 
+    messages.push({ role: "user", content: trimmedInput });
+
     try {
-      const response = await model.invoke(trimmedInput);
+      const response = await model.invoke(messages);
       const aiText = response?.text || response?.content || "No response";
+
+      messages.push({ role: "assistant", content: aiText });
       printMessage("ai", aiText);
     } catch (error) {
       printMessage("ai", "Sorry, I could not generate a response.");
