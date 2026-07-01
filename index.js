@@ -16,7 +16,9 @@ const model= new chatMistralAi({
 
 })
 
-const response= await model.invoke("what is the captial of INDIA")
-
-console.log(response.text)
+while(true){
+    const userInput=await rl.question("you: ")
+    const response = await model.invoke(userInput)
+    console.log(response.text)
+}
 rl.close()
