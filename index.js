@@ -1,30 +1,22 @@
+import "dotenv/config"
 import readline  from "readline"
-
+import{chatMistralAi}  from "@langchain/mistralai"
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-function askQuestion(question) {
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => resolve(answer.trim()));
-  });
-}
+rl.question("What is your name?  ",(name)=>{
+    console.log(`hello ${name}`);
+    
+})
+ 
+const model= new chatMistralAi({
+    model:"mistral-small-latest",
 
-async function main() {
-  const userInput = await askQuestion('Enter your prompt: ');
+})
 
-  if (!userInput) {
-    console.log('No input provided.');
-    rl.close();
-    return;
-  }
+const response= await model.invoke("what is the captial of INDIA")
 
-  console.log(`You entered: ${userInput}`);
-  rl.close();
-}
-
-main().catch((err) => {
-  console.error(err);
-  rl.close();
-});
+console.log(response.text)
+rl.close()
