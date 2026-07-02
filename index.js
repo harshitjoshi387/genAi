@@ -1,6 +1,6 @@
 import "dotenv/config";
 import readline from "readline";
-import { chatMistralAi } from "@langchain/mistralai";
+import { ChatMistralAI } from "@langchain/mistralai";
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -8,7 +8,7 @@ const rl = readline.createInterface({
 });
 
 const messages = [];
-const model = new chatMistralAi({
+const model = new ChatMistralAI({
   model: "mistral-small-latest",
 });
 
